@@ -25,7 +25,7 @@ jobs:
         run: |
           pytest
 
-  build-push-docker:
+  build-deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -43,5 +43,9 @@ jobs:
         with:
           context: .
           push: true
-          # Aquí usa el secreto y el nombre de tu repo en Docker Hub
+          # Asegúrate de que esto coincida con tu repo
           tags: ${{ secrets.DOCKER_USERNAME }}/devops-practica-final:latest
+
+      - name: Desplegar en Render
+        run: |
+          curl -X GET ${{ secrets.RENDER_DEPLOY_HOOK }}
